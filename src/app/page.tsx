@@ -157,25 +157,6 @@ export default function Home() {
     }
   }, [])
 
-  // デモ用のメッセージ追加関数
-  const addMessage = (
-    text: string,
-    role?: 'user' | 'assistant' | 'system' | undefined
-  ) => {
-    const item: ItemType = {
-      id: Math.random().toString(36).substring(7),
-      object: 'item',
-      role: role,
-      formatted: { text },
-      type: 'function_call',
-      status: 'in_progress',
-      call_id: 'call_id_example',
-      name: 'function_name',
-      arguments: '',
-    }
-    setItems((prevItems) => [...prevItems, item])
-  }
-
   return (
     <div className='container mx-auto p-4'>
       <h1 className='text-2xl font-bold mb-4 text-center'>
@@ -291,25 +272,6 @@ export default function Home() {
               </div>
             </CardContent>
           </Card>
-          {/* デモ用のボタン */}
-          <div className='mt-4 space-y-2'>
-            <Button
-              onClick={() =>
-                addMessage('これは音声認識されたテキストです。', 'user')
-              }
-              className='w-full'
-            >
-              Add User Message
-            </Button>
-            <Button
-              onClick={() =>
-                addMessage('これはアシスタントの応答です。', 'assistant')
-              }
-              className='w-full'
-            >
-              Add AI Response
-            </Button>
-          </div>
         </div>
       </div>
     </div>
