@@ -30,6 +30,7 @@ const ApiKeyCard = () => {
     setSavedApiKey(apiKey)
     setApiKey('')
     alert('API Key has been saved!')
+    window.location.reload()
   }
 
   return (

@@ -22,12 +22,15 @@ export default function Home() {
   const wavStreamPlayerRef = useRef<WavStreamPlayer>(
     new WavStreamPlayer({ sampleRate: 24000 })
   )
-  const clientRef = useRef<RealtimeClient>(
-    new RealtimeClient({
-      apiKey: localStorage.getItem(localStorageKey) || '',
+  const clientRef = useRef<RealtimeClient>(new RealtimeClient({}))
+  // localStorageはクライアントサイドレンダリング完了後に安全に参照しclientRefを初期化
+  useEffect(() => {
+    const apiKey = localStorage.getItem(localStorageKey) || ''
+    clientRef.current = new RealtimeClient({
+      apiKey: apiKey,
       dangerouslyAllowAPIKeyInBrowser: true,
     })
-  )
+  }, [])
 
   const startTimeRef = useRef<string>(new Date().toISOString())
 
