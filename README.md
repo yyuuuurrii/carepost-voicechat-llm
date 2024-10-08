@@ -1,5 +1,17 @@
+# Care Post Voice Chat LLM
 
-## References
+[openai/openai-realtime-console](https://github.com/openai/openai-realtime-console)をベースに必要機能のみに削ぎ落とした実証実験用のデモアプリケーションです。Next.jsで構築されています。
 
-- [Implementing Web Sockets with Next.js and API Routes: A Guide | by Saad Iqbal Chaudhry | Medium](https://medium.com/@saadiqbalch786/implementing-web-sockets-with-next-js-and-api-routes-a-guide-d6143e3edcb0)
-  - Next.jsでWebSocket扱うサンプル
+## Run
+
+#### 1. クローン後、以下を実行しパッケージをダウンロードしてください
+
+```sh
+npm i
+```
+
+#### 2. ルートディレクトリで以下のコマンドを実行すると、[http://localhost:3000](http://localhost:3000)でアクセスできるようになります
+
+```sh
+npm run dev
+```
