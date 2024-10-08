@@ -108,14 +108,14 @@ export default function Home() {
     const wavStreamPlayer = wavStreamPlayerRef.current
     const client = clientRef.current
 
-    // Set instructions
     client.updateSession({
       instructions: instructions,
+      // Voice Optionsを指定
+      voice: 'shimmer',
       // VADをデフォルト設定にする
       turn_detection: { type: 'server_vad' },
+      input_audio_transcription: { model: 'whisper-1' },
     })
-    // Set transcription, otherwise we don't get user transcriptions back
-    client.updateSession({ input_audio_transcription: { model: 'whisper-1' } })
 
     // イベントログの取得
     client.on('realtime.event', (realtimeEvent: RealtimeEvent) => {
