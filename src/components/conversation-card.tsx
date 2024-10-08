@@ -11,7 +11,7 @@ const ConversationCard = ({ items }: { items: ItemType[] }) => {
         <CardTitle>Conversation</CardTitle>
       </CardHeader>
       <CardContent>
-        {items.map((item, i) => {
+        {items.map((item) => {
           return (
             <div
               className={`conversation-item mb-4 ${
