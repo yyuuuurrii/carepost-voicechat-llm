@@ -3,13 +3,12 @@
 import { ApiKeyCard, localStorageKey } from '@/components/api-key-card'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { instructions } from '@/lib/config'
 import { RealtimeClient } from '@openai/realtime-api-beta'
 import { ItemType } from '@openai/realtime-api-beta/dist/lib/client.js'
 import { Mic, MicOff } from 'lucide-react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { WavRecorder, WavStreamPlayer } from '../lib/wavtools/index.js'
-
-const instructions = 'This is a demo of the OpenAI Realtime API.'
 
 export default function Home() {
   // OpenAIの音声入出力ライブラリを初期化
