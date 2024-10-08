@@ -28,4 +28,4 @@ mainブランチにプッシュされると、GitHub Actions経由で自動デ�
     - ブラウザのlocalStorageに保持されるため2回目以降の操作は不要
 1. 右の「Controls」にある「Start Conversation」ボタンを押下し会話開始
     - 必要に応じてマイクやスピーカーのブラウザ許可をしてください
-1. 会話が終了したら「Stop Conversation」ボタンを押下し修了
+1. 会話が終了したら「Finish Conversation」ボタンを押下し修了
