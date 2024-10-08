@@ -2,6 +2,7 @@
   "name": "carepost-voicechat-llm",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://yyuuuurrii.github.io/carepost-voicechat-llm",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
