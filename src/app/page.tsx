@@ -180,7 +180,7 @@ export default function Home() {
   return (
     <div className='container mx-auto p-4'>
       <h1 className='text-2xl font-bold mb-4 text-center'>
-        OpenAI Realtime API Demo
+        Carepost Voice Chat Demo
       </h1>
       <div className='grid grid-cols-3 gap-4'>
         <div className='col-span-2'>
