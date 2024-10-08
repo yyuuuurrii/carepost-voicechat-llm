@@ -1,6 +1,7 @@
 'use client'
 
 import { ApiKeyCard, localStorageKey } from '@/components/api-key-card'
+import { ConversationCard } from '@/components/conversation-card'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { instructions } from '@/lib/config'
@@ -12,9 +13,6 @@ import { WavRecorder, WavStreamPlayer } from '../lib/wavtools/index.js'
 
 export default function Home() {
   // OpenAIの音声入出力ライブラリを初期化
-  // WavRecorder: 音声入力
-  // WavStreamPlayer: 音声出力
-  // RealtimeClient: OpenAI APIクライアント
   const wavRecorderRef = useRef<WavRecorder>(
     new WavRecorder({ sampleRate: 24000 })
   )
@@ -80,14 +78,7 @@ export default function Home() {
     await wavStreamPlayer.interrupt()
   }, [])
 
-  const deleteConversationItem = useCallback(async (id: string) => {
-    const client = clientRef.current
-    client.deleteItem(id)
-  }, [])
-
-  /**
-   * 会話ログのスクロールを最下部に移動
-   */
+  // 会話ログのスクロールを最下部に移動
   useEffect(() => {
     const conversationEls = [].slice.call(
       document.body.querySelectorAll('[data-conversation-content]')
@@ -164,79 +155,7 @@ export default function Home() {
       </h1>
       <div className='grid grid-cols-3 gap-4'>
         <div className='col-span-2'>
-          <Card
-            className='h-[calc(100vh-8rem)] overflow-y-auto'
-            data-conversation-content
-          >
-            <CardHeader>
-              <CardTitle>Conversation</CardTitle>
-            </CardHeader>
-            <CardContent>
-              {items.map((item, i) => {
-                return (
-                  <div
-                    className={`conversation-item mb-4 ${
-                      item.role === 'user' ? 'text-right' : 'text-left'
-                    }`}
-                    key={item.id}
-                  >
-                    <div className={`speaker ${item.role || ''}`}>
-                      <div>{(item.role || item.type).replaceAll('_', ' ')}</div>
-                      <div
-                        className='close'
-                        onClick={() => deleteConversationItem(item.id)}
-                      >
-                        <div />
-                      </div>
-                    </div>
-                    <div
-                      className={`speaker-content inline-block p-2 rounded-lg ${
-                        item.role === 'user'
-                          ? 'bg-primary text-primary-foreground'
-                          : 'bg-secondary'
-                      }`}
-                    >
-                      {/* tool response */}
-                      {item.type === 'function_call_output' && (
-                        <div>{item.formatted.output}</div>
-                      )}
-                      {/* tool call */}
-                      {!!item.formatted.tool && (
-                        <div>
-                          {item.formatted.tool.name}(
-                          {item.formatted.tool.arguments})
-                        </div>
-                      )}
-                      {!item.formatted.tool && item.role === 'user' && (
-                        <div>
-                          {item.formatted.transcript ||
-                            (item.formatted.audio?.length
-                              ? '(awaiting transcript)'
-                              : item.formatted.text || '(item sent)')}
-                        </div>
-                      )}
-                      {!item.formatted.tool && item.role === 'assistant' && (
-                        <div>
-                          {item.formatted.transcript ||
-                            item.formatted.text ||
-                            '(truncated)'}
-                        </div>
-                      )}
-                    </div>
-                    {/* 各会話の音声ファイルも取得可能 */}
-                    {/* {item.formatted.file && (
-                      <audio src={item.formatted.file.url} controls />
-                    )} */}
-                  </div>
-                )
-              })}
-              {items.length === 0 && (
-                <p className='text-center text-muted-foreground'>
-                  会話が開始されるとここに表示されます...
-                </p>
-              )}
-            </CardContent>
-          </Card>
+          <ConversationCard items={items} />
         </div>
         <div>
           <ApiKeyCard />
@@ -278,9 +197,6 @@ export default function Home() {
   )
 }
 
-/**
- * Type for all event logs
- */
 interface RealtimeEvent {
   time: string
   source: 'client' | 'server'
