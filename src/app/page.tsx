@@ -4,9 +4,16 @@ import { ApiKeyCard, localStorageKey } from '@/components/api-key-card'
 import { ConversationCard } from '@/components/conversation-card'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { instructions } from '@/lib/config'
+import {
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import { Instructions, selectableInstructions } from '@/lib/config'
 import { RealtimeClient } from '@openai/realtime-api-beta'
 import { ItemType } from '@openai/realtime-api-beta/dist/lib/client.js'
+import { Select } from '@radix-ui/react-select'
 import { Mic, MicOff } from 'lucide-react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { WavRecorder, WavStreamPlayer } from '../lib/wavtools/index.js'
@@ -33,6 +40,14 @@ export default function Home() {
 
   const [items, setItems] = useState<ItemType[]>([])
   const [isConnected, setIsConnected] = useState(false)
+  const [instructions, setInstructions] = useState<Instructions>()
+  const onChangeInstructions = (value: string) => {
+    const instructions = JSON.parse(value) as Instructions
+    setInstructions(instructions)
+    clientRef.current.updateSession({
+      instructions: instructions.content,
+    })
+  }
 
   const connectConversation = useCallback(async () => {
     const client = clientRef.current
@@ -57,7 +72,7 @@ export default function Home() {
     client.sendUserMessageContent([
       {
         type: `input_text`,
-        text: `Hello!`,
+        text: `こんにちは!`,
       },
     ])
     await wavRecorder.clear()
@@ -99,7 +114,7 @@ export default function Home() {
     const client = clientRef.current
 
     client.updateSession({
-      instructions: instructions,
+      instructions: instructions?.content,
       // Voice Optionsを指定
       voice: 'shimmer',
       // VADをデフォルト設定にする
@@ -159,6 +174,34 @@ export default function Home() {
         </div>
         <div>
           <ApiKeyCard />
+          <Card className='mb-4'>
+            <CardHeader>
+              <CardTitle>Instructions</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Select onValueChange={onChangeInstructions}>
+                <SelectTrigger className='w-[180px]'>
+                  <SelectValue placeholder='Select Instructions' />
+                </SelectTrigger>
+                <SelectContent>
+                  {selectableInstructions.map((instruction) => {
+                    return (
+                      <SelectItem
+                        key={instruction.id}
+                        // stringしか受け付けないのでJSON.stringifyで変換
+                        value={JSON.stringify(instruction)}
+                      >
+                        {instruction.shortName}
+                      </SelectItem>
+                    )
+                  })}
+                </SelectContent>
+              </Select>
+              <div className='mt-4 text-sm'>
+                {instructions ? instructions.content : '---'}
+              </div>
+            </CardContent>
+          </Card>
           <Card>
             <CardHeader>
               <CardTitle>Controls</CardTitle>
