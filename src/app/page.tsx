@@ -4,12 +4,14 @@ import { ApiKeyCard, localStorageKey } from '@/components/api-key-card'
 import { ConversationCard } from '@/components/conversation-card'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Label } from '@/components/ui/label'
 import {
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { Switch } from '@/components/ui/switch'
 import { Instructions, selectableInstructions } from '@/lib/config'
 import { RealtimeClient } from '@openai/realtime-api-beta'
 import { ItemType } from '@openai/realtime-api-beta/dist/lib/client.js'
@@ -40,6 +42,8 @@ export default function Home() {
 
   const [items, setItems] = useState<ItemType[]>([])
   const [isConnected, setIsConnected] = useState(false)
+
+  // システムプロンプト関連の処理
   const [instructions, setInstructions] = useState<Instructions>()
   const onChangeInstructions = (value: string) => {
     const instructions = JSON.parse(value) as Instructions
@@ -47,6 +51,19 @@ export default function Home() {
     clientRef.current.updateSession({
       instructions: instructions.content,
     })
+  }
+
+  // ミュート関連の処理
+  const [isMute, setIsMute] = useState(false)
+  const onChangeMuteToggle = async () => {
+    const newValue = !isMute
+    setIsMute(newValue)
+    const wavRecorder = wavRecorderRef.current
+    await (newValue
+      ? wavRecorder.pause()
+      : wavRecorder.record((data) =>
+          clientRef.current.appendInputAudio(data.mono)
+        ))
   }
 
   const connectConversation = useCallback(async () => {
@@ -75,7 +92,6 @@ export default function Home() {
         text: `こんにちは!`,
       },
     ])
-    await wavRecorder.clear()
     await wavRecorder.record((data) => client.appendInputAudio(data.mono))
   }, [])
 
@@ -91,6 +107,9 @@ export default function Home() {
 
     const wavStreamPlayer = wavStreamPlayerRef.current
     await wavStreamPlayer.interrupt()
+
+    // ミュート設定も解除
+    setIsMute(false)
   }, [])
 
   // 会話ログのスクロールを最下部に移動
@@ -224,9 +243,15 @@ export default function Home() {
                 </Button>
                 <div className='text-center text-sm text-muted-foreground'>
                   {isConnected ? (
-                    <span className='flex items-center justify-center'>
-                      <span className='animate-pulse mr-2'>●</span> 会話中...
-                    </span>
+                    <div className='flex items-center justify-center'>
+                      {/* ref. https://github.com/shadcn-ui/ui/issues/230#issuecomment-1518156039 */}
+                      <Switch
+                        id='mute'
+                        checked={isMute}
+                        onCheckedChange={onChangeMuteToggle}
+                      />
+                      <Label htmlFor='mute'>ミュート</Label>
+                    </div>
                   ) : (
                     '会話を開始するには「Start Conversation」をクリックしてください'
                   )}
