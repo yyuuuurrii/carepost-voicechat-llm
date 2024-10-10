@@ -67,6 +67,9 @@ export default function Home() {
   }
 
   const connectConversation = useCallback(async () => {
+    // 前回の会話ログが残っていたらクリア
+
+    setItems([])
     const client = clientRef.current
     const wavRecorder = wavRecorderRef.current
     const wavStreamPlayer = wavStreamPlayerRef.current
@@ -97,7 +100,6 @@ export default function Home() {
 
   const disconnectConversation = useCallback(async () => {
     setIsConnected(false)
-    setItems([])
 
     const client = clientRef.current
     client.disconnect()
