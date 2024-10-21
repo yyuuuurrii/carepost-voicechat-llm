@@ -92,7 +92,7 @@ export default function Home() {
     client.sendUserMessageContent([
       {
         type: `input_text`,
-        text: `こんにちは!`,
+        text: `もしもし`,
       },
     ])
     await wavRecorder.record((data) => client.appendInputAudio(data.mono))
@@ -137,7 +137,7 @@ export default function Home() {
     client.updateSession({
       instructions: instructions?.content,
       // Voice Optionsを指定
-      voice: 'shimmer',
+      voice: 'nova',
       // VADをデフォルト設定にする
       turn_detection: { type: 'server_vad' },
       input_audio_transcription: { model: 'whisper-1' },
