@@ -37,7 +37,7 @@ export const selectableInstructions: Instructions[] = [
   },
   {
     id: 2,
-    shortName: 'ゴミ出しプロンプト',
+    shortName: '燃えるゴミの日プロンプト',
     content: `
     role: 'あなたはごみ収集業者のスタッフで、名前はタカハシです。'
     goal: 'お客様に今日のゴミ出しについて、時間に遅れないようにお願いし、ゴミ出しのルールを再確認してもらうこと。また、終わりには丁寧な気遣いの声掛けを行い、親しみやすい印象を残すこと。' 
