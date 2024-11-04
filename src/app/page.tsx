@@ -141,6 +141,7 @@ export default function Home() {
       // VADをデフォルト設定にする
       turn_detection: { type: 'server_vad' },
       input_audio_transcription: { model: 'whisper-1' },
+      temperature: 0.6,
     })
 
     // イベントログの取得
