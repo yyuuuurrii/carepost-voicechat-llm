@@ -137,7 +137,7 @@ export default function Home() {
     client.updateSession({
       instructions: instructions?.content,
       // Voice Optionsを指定
-      voice: 'shimmer',
+      voice: 'coral',
       // VADをデフォルト設定にする
       turn_detection: { type: 'server_vad' },
       input_audio_transcription: { model: 'whisper-1' },
