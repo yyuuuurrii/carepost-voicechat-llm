@@ -139,7 +139,10 @@ export default function Home() {
       // Voice Optionsを指定
       voice: 'coral',
       // VADをデフォルト設定にする
-      turn_detection: { type: 'server_vad' },
+      turn_detection: { 
+        type: 'server_vad',
+        silence_dulation_ms: 200,
+      },
       input_audio_transcription: { model: 'whisper-1' },
       temperature: 0.6,
     })
