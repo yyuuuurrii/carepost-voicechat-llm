@@ -141,7 +141,7 @@ export default function Home() {
       // VADをデフォルト設定にする
       turn_detection: { 
         type: 'server_vad',
-        silence_duration_ms: 200,
+        silence_duration_ms: 100,
       },
       input_audio_transcription: { model: 'whisper-1' },
       temperature: 0.6,
