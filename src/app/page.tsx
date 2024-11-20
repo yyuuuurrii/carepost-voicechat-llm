@@ -88,7 +88,7 @@ export default function Home() {
     // Connect to realtime API
     await client.connect()
 
-    メッセージを入れておくと会話開始時に挨拶から始めてくれる
+    // メッセージを入れておくと会話開始時に挨拶から始めてくれる
     client.sendUserMessageContent([
       {
         type: `input_text`,
